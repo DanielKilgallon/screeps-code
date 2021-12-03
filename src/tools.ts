@@ -27,6 +27,42 @@ export class Tools {
   static generateName(prefix: string): string {
     return prefix.concat(Game.time.toString().slice(-4));
   }
+  static calculateRCL(room: Room): maxCreep {
+    switch (room.controller?.level) {
+      case 1:
+        return {
+          maxHarvesterCount: 1,
+          maxHaulerCount: 1,
+          maxUpgraderCount: 1,
+          maxBuilderCount: 1
+        }
+      case 2:
+        return {
+          maxHarvesterCount: 1,
+          maxHaulerCount: 1,
+          maxUpgraderCount: 2,
+          maxBuilderCount: 1
+        }
+      case 3:
+        return {
+          maxHarvesterCount: 1,
+          maxHaulerCount: 1,
+          maxUpgraderCount: 3,
+          maxBuilderCount: 1
+        }
+
+      default:
+        return {
+          maxHarvesterCount: 1,
+          maxHaulerCount: 1,
+          maxUpgraderCount: 1,
+          maxBuilderCount: 1
+        }
+    }
+  }
+
+
+
   /**
   * original by kaiskye
   * ported to TS by antonn

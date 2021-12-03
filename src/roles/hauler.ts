@@ -12,7 +12,7 @@ export function runHauler(creep: Creep) {
                     creep.moveTo(tombs[0]);
                 }
             } else {
-                const containers = creep.room.find(FIND_STRUCTURES, { filter: (s: AnyStoreStructure) => s.structureType === STRUCTURE_CONTAINER && s.store.getFreeCapacity(RESOURCE_ENERGY) > 0 });
+                const containers = creep.room.find(FIND_STRUCTURES, { filter: (s: AnyStoreStructure) => s.structureType === STRUCTURE_CONTAINER && s.store.energy > 0 });
                 if (creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(containers[0]);
                 }

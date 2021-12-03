@@ -25,12 +25,12 @@ export function runBuilder(creep: Creep) {
             }
             break;
         case CreepState.repair:
-            // if (creep.store.energy === 0) {
-            creep.memory.prevState = creep.memory.state;
-            creep.memory.state = CreepState.harvest;
-            // } else {
-            // repair(creep);
-            // }
+            if (creep.store.energy === 0) {
+                creep.memory.prevState = creep.memory.state;
+                creep.memory.state = CreepState.harvest;
+            } else {
+                repair(creep);
+            }
             break;
         default:
             console.log("builder: " + creep.name + " accidentally has no state");
@@ -98,11 +98,18 @@ function build(creep: Creep) {
 }
 
 function harvestEnergy(creep: Creep) {
-    var sources = creep.room.find(FIND_STRUCTURES, {
-        filter: (structure: AnyStoreStructure) => { return (structure.structureType == STRUCTURE_CONTAINER) && structure.store.energy > 0 }
-    });
-    if (creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(sources[0]);
+    const dropped_energy = creep.room.find(FIND_DROPPED_RESOURCES, { filter: (s: Resource) => s.resourceType === RESOURCE_ENERGY && s.amount > creep.store.getFreeCapacity(RESOURCE_ENERGY) });
+    if (dropped_energy.length > 0) {
+        if (creep.pickup(dropped_energy[0]) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(dropped_energy[0]);
+        }
+    } else {
+        var sources = creep.room.find(FIND_STRUCTURES, {
+            filter: (structure: AnyStoreStructure) => { return (structure.structureType == STRUCTURE_CONTAINER) && structure.store.energy > 0 }
+        });
+        if (creep.withdraw(sources[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+            creep.moveTo(sources[0]);
+        }
     }
 }
 
