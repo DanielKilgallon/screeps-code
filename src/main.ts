@@ -6,7 +6,8 @@ import { runBuilder } from 'roles/builder';
 import { runHauler } from 'roles/hauler';
 import { runTower } from 'roles/tower';
 
-import { Tools } from 'tools';
+import { Tools } from 'utils/tools';
+import { cli } from 'utils/cli';
 
 // import * as Profiler from "./utils/Profiler";
 
@@ -62,8 +63,8 @@ declare global {
   namespace NodeJS {
     interface Global {
       log: any;
-      Tools: Tools;
-      CreepRole: CreepRole;
+      cli: typeof cli;
+      // CreepRole: CreepRole;
       // maxCreep: maxCreep;
       // Profiler: Profiler;
     }
@@ -76,7 +77,7 @@ console.log(`Code updated at game tick: ${Game.time}`);
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 
 // This line monkey patches the global prototypes.
-global.Tools = Tools;
+global.cli = cli;
 export const loop = ErrorMapper.wrapLoop(() => {
   const room = Game.rooms['E33N37'];
   // Game.rooms['E33N37'].energyAvailable
@@ -96,17 +97,13 @@ export const loop = ErrorMapper.wrapLoop(() => {
   // console.log(Tools.getCreepBodyCost(Tools.GenerateBodyFromPattern('[mc2]*', 5, Game.rooms['E33N37'].energyAvailable)));
 
   if (curHarvesterCount < maxCreeps.maxHarvesterCount) {
-    console.log(CreepRole.harvester);
-    console.log(Game.spawns['SlickHome'].spawnCreep(Tools.GenerateBodyFromPattern('m[w]*', MAX_REPEATBLE_BODY, room.energyAvailable), Tools.generateName("Harvester_"), { memory: { role: CreepRole.harvester, room: room.name } }));
+    Game.spawns['SlickHome'].spawnCreep(Tools.GenerateBodyFromPattern('m[w]*', MAX_REPEATBLE_BODY, room.energyAvailable), Tools.generateName("Harvester_"), { memory: { role: CreepRole.harvester, room: room.name } });
   } else if (curHaulerCount < maxCreeps.maxHaulerCount) {
-    console.log(CreepRole.hauler);
-    console.log(Game.spawns['SlickHome'].spawnCreep(Tools.GenerateBodyFromPattern('[mc2]*', MAX_REPEATBLE_BODY, room.energyAvailable), Tools.generateName("Hauler_"), { memory: { role: CreepRole.hauler, room: room.name } }));
+    Game.spawns['SlickHome'].spawnCreep(Tools.GenerateBodyFromPattern('[mc2]*', MAX_REPEATBLE_BODY, room.energyAvailable), Tools.generateName("Hauler_"), { memory: { role: CreepRole.hauler, room: room.name } });
   } else if (curUpgraderCount < maxCreeps.maxUpgraderCount) {
-    console.log(CreepRole.upgrader);
-    console.log(Game.spawns['SlickHome'].spawnCreep(Tools.GenerateBodyFromPattern('[m[wc2]]*', MAX_REPEATBLE_BODY, room.energyAvailable), Tools.generateName("Upgrader_"), { memory: { role: CreepRole.upgrader, room: room.name } }));
+    Game.spawns['SlickHome'].spawnCreep(Tools.GenerateBodyFromPattern('[m[wc2]]*', MAX_REPEATBLE_BODY, room.energyAvailable), Tools.generateName("Upgrader_"), { memory: { role: CreepRole.upgrader, room: room.name } });
   } else if (curBuilderCount < maxCreeps.maxBuilderCount) {
-    console.log(CreepRole.builder);
-    console.log(Game.spawns['SlickHome'].spawnCreep(Tools.GenerateBodyFromPattern('[mwc2]*', MAX_REPEATBLE_BODY, room.energyAvailable), Tools.generateName("Builder_"), { memory: { role: CreepRole.builder, room: room.name, prevState: CreepState.build, state: CreepState.harvest } }));
+    Game.spawns['SlickHome'].spawnCreep(Tools.GenerateBodyFromPattern('[mwc2]*', MAX_REPEATBLE_BODY, room.energyAvailable), Tools.generateName("Builder_"), { memory: { role: CreepRole.builder, room: room.name, prevState: CreepState.build, state: CreepState.harvest } });
   }
 
   // automatically delete memory of missing creeps

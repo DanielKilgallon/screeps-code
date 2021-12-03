@@ -47,8 +47,8 @@ export class Tools {
         return {
           maxHarvesterCount: 1,
           maxHaulerCount: 1,
-          maxUpgraderCount: 3,
-          maxBuilderCount: 1
+          maxUpgraderCount: 4,
+          maxBuilderCount: 2
         }
 
       default:
