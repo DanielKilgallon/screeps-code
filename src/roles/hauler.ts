@@ -1,6 +1,6 @@
 export function runHauler(creep: Creep) {
     if (creep.store.energy === 0) {
-        const dropped_energy = creep.room.find(FIND_DROPPED_RESOURCES, { filter: (s: Resource) => s.resourceType === RESOURCE_ENERGY && s.amount > creep.store.getFreeCapacity(RESOURCE_ENERGY) });
+        const dropped_energy = creep.room.find(FIND_DROPPED_RESOURCES, { filter: (s: Resource) => s.resourceType === RESOURCE_ENERGY && s.amount > 50 });
         if (dropped_energy.length > 0) {
             if (creep.pickup(dropped_energy[0]) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(dropped_energy[0]);

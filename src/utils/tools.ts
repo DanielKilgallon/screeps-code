@@ -2,8 +2,8 @@ export class Tools {
   static getTowers(room: Room): StructureTower[] {
     return room.find(FIND_STRUCTURES, { filter: (structure: Structure) => { return structure.structureType == STRUCTURE_TOWER; } });
   }
-  static getCreepsByRole(role: string): Creep[] {
-    return Game.rooms['E33N37'].find(FIND_MY_CREEPS).filter((creep: Creep) => { return creep.memory.role == role; });
+  static getCreepsByRole(room: Room, role: string): Creep[] {
+    return room.find(FIND_MY_CREEPS).filter((creep: Creep) => { return creep.memory.role == role && creep.room.name === room.name; });
   }
   static getSourceSpots(room: Room): Source[] {
     return room.find(FIND_SOURCES);
@@ -24,6 +24,15 @@ export class Tools {
     }
     return cost;
   }
+  static validateMinimumCreepBody(minimumparts: BodyPartConstant[], parts: BodyPartConstant[]): boolean {
+    let result = true;
+    minimumparts.forEach((part: BodyPartConstant) => {
+      if (!parts.includes(part)) {
+        result = false;
+      }
+    });
+    return result;
+  }
   static generateName(prefix: string): string {
     return prefix.concat(Game.time.toString().slice(-4));
   }
@@ -37,20 +46,27 @@ export class Tools {
           maxBuilderCount: 1
         }
       case 2:
+        Memory.createRoad = true;
+        return {
+          maxHarvesterCount: 1,
+          maxHaulerCount: 1,
+          maxUpgraderCount: 2,
+          maxBuilderCount: 2
+        }
+      case 3:
         return {
           maxHarvesterCount: 1,
           maxHaulerCount: 1,
           maxUpgraderCount: 2,
           maxBuilderCount: 1
         }
-      case 3:
+      case 4:
         return {
           maxHarvesterCount: 1,
           maxHaulerCount: 1,
-          maxUpgraderCount: 4,
+          maxUpgraderCount: 2,
           maxBuilderCount: 2
         }
-
       default:
         return {
           maxHarvesterCount: 1,

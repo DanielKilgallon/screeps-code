@@ -1,5 +1,5 @@
 export const cli = {
-    getArgv: () => {
+    getArgv: (): void => {
         console.log('temo');
     }
 };
