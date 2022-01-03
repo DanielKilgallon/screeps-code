@@ -1,5 +1,7 @@
-export const cli = {
-    getArgv: (): void => {
-        console.log('temo');
+export class CommandLineHelper {
+    updateCycle(): void {
+        console.log('Update');
     }
 };
+
+export const cli = new CommandLineHelper();

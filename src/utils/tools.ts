@@ -36,6 +36,24 @@ export class Tools {
   static generateName(prefix: string): string {
     return prefix.concat(Game.time.toString().slice(-4));
   }
+  static rolePatterns: { [roleName: string]: string } = {
+    worker: "[wmc]11[mww]5mw",
+    filler: "[mcc]8",
+    foot: "[mcw]*",
+    hauler: "[mcc]8",
+    labrador: "[mcc]8",
+    miner: "mw6cw4m",
+    mineralHauler: "[mcc]8",
+    mineralMiner: "[mwwww]10",
+    peacekeeper: "mamamamrmrmamamamrmrmamamamhmh",
+    remoteHauler: "[cmc]",
+    remoteMiner: "w2cmw4m3w4m",
+    reserver: "[lm]5",
+    scout: "m",
+    upgrader: "[mwcwmw]8",
+    manager: "c16",
+    quickFiller: "c4"
+  };
   static calculateRCL(room: Room): maxCreep {
     switch (room.controller?.level) {
       case 1:
@@ -67,6 +85,20 @@ export class Tools {
           maxUpgraderCount: 2,
           maxBuilderCount: 2
         }
+      case 5:
+        return {
+          maxHarvesterCount: 1,
+          maxHaulerCount: 1,
+          maxUpgraderCount: 2,
+          maxBuilderCount: 2
+        }
+      case 6:
+        return {
+          maxHarvesterCount: 1,
+          maxHaulerCount: 1,
+          maxUpgraderCount: 3,
+          maxBuilderCount: 1
+        }
       default:
         return {
           maxHarvesterCount: 1,
@@ -82,6 +114,9 @@ export class Tools {
   /**
   * original by kaiskye
   * ported to TS by antonn
+  * copied shamelessly here.
+  * 
+  * Original: https://github.com/antonnyst/screeps-typescript/blob/master/src/utils/CreepBodyGenerator.ts
   *
   * Generates a list of body parts to spawn a creep with by following a
   * regex-like pattern to decide which parts to try spawning and fitting in as
