@@ -13,8 +13,15 @@ export function runHauler(creep: Creep) {
                 }
             } else {
                 const containers = creep.room.find(FIND_STRUCTURES, { filter: (s: AnyStoreStructure) => s.structureType === STRUCTURE_CONTAINER && s.store.energy > 0 });
-                if (creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(containers[0]);
+                if (containers.length > 0) {
+                    if (creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(containers[0]);
+                    }
+                } else {
+                    const storage = creep.room.find(FIND_STRUCTURES, { filter: (s: AnyStoreStructure) => s.structureType === STRUCTURE_STORAGE && s.store.energy > 0 });
+                    if (creep.withdraw(storage[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(storage[0]);
+                    }
                 }
             }
         }
@@ -22,7 +29,7 @@ export function runHauler(creep: Creep) {
         var targets = creep.room.find(FIND_STRUCTURES,
             {
                 filter: (structure: AnyStoreStructure) =>
-                    (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER)
+                    (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER || structure.structureType == STRUCTURE_STORAGE)
                     && structure.store
                     && structure.store.energy < structure.store.getCapacity(RESOURCE_ENERGY)
             });
