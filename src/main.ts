@@ -2,8 +2,8 @@ import { ErrorMapper } from 'utils/ErrorMapper';
 
 import { runHarvester } from 'roles/harvester';
 import { manageUpgraders } from 'managers/upgrade-manager';
+import { managerHaulers } from 'managers/hauler-manager';
 import { runBuilder } from 'roles/builder';
-import { runHauler } from 'roles/hauler';
 import { runTower } from 'roles/tower';
 
 import { Tools } from 'utils/tools';
@@ -104,7 +104,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
   const upgraderBody = Tools.GenerateBodyFromPattern('[m[wc2]]*', MAX_REPEATBLE_BODY, room.energyAvailable)
   const validUpgrader = Tools.validateMinimumCreepBody([MOVE, WORK, CARRY], upgraderBody);
 
-  const builderBody = Tools.GenerateBodyFromPattern('[mwc2]*', MAX_REPEATBLE_BODY, room.energyAvailable)
+  const builderBody = Tools.GenerateBodyFromPattern('[mwc2]*', 3, room.energyAvailable)
   const validBuilder = Tools.validateMinimumCreepBody([MOVE, WORK, CARRY], builderBody);
 
   if (curHarvesterCount.length < maxCreeps.maxHarvesterCount && validHarvester) {
@@ -134,7 +134,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
 
   // perform role functions
   curHarvesterCount.map(runHarvester);
-  curHaulerCount.map(runHauler);
+  managerHaulers(room);
   manageUpgraders(room);
   curBuilderCount.map(runBuilder);
   Tools.getTowers(Game.rooms['E33N37']).map(runTower);
