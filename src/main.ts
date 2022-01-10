@@ -1,7 +1,7 @@
 import { ErrorMapper } from 'utils/ErrorMapper';
 
 import { runHarvester } from 'roles/harvester';
-import { runUpgrader } from 'roles/upgrader';
+import { manageUpgraders } from 'managers/upgrade-manager';
 import { runBuilder } from 'roles/builder';
 import { runHauler } from 'roles/hauler';
 import { runTower } from 'roles/tower';
@@ -135,7 +135,7 @@ export const loop = ErrorMapper.wrapLoop(() => {
   // perform role functions
   curHarvesterCount.map(runHarvester);
   curHaulerCount.map(runHauler);
-  curUpgraderCount.map(runUpgrader);
+  manageUpgraders(room);
   curBuilderCount.map(runBuilder);
   Tools.getTowers(Game.rooms['E33N37']).map(runTower);
 });

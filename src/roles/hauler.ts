@@ -29,7 +29,7 @@ export function runHauler(creep: Creep) {
         var targets = creep.room.find(FIND_STRUCTURES,
             {
                 filter: (structure: AnyStoreStructure) =>
-                    (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER || structure.structureType == STRUCTURE_STORAGE)
+                    (structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_TOWER)
                     && structure.store
                     && structure.store.energy < structure.store.getCapacity(RESOURCE_ENERGY)
             });
@@ -39,7 +39,21 @@ export function runHauler(creep: Creep) {
                 creep.moveTo(target);
             }
         } else {
-            creep.moveTo(Game.spawns['SlickHome']);
+            var storage_targets = creep.room.find(FIND_STRUCTURES,
+                {
+                    filter: (structure: AnyStoreStructure) =>
+                        (structure.structureType == STRUCTURE_STORAGE)
+                        && structure.store
+                        && structure.store.energy < structure.store.getCapacity(RESOURCE_ENERGY)
+                });
+            if (storage_targets.length > 0) {
+                const target = creep.pos.findClosestByPath(targets) as AnyStoreStructure;
+                if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
+                }
+            } else {
+                creep.moveTo(Game.spawns['SlickHome']);
+            }
         }
     }
 };
