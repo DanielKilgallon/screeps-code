@@ -2,6 +2,9 @@ export class Tools {
   static getTowers(room: Room): StructureTower[] {
     return room.find(FIND_STRUCTURES, { filter: (structure: Structure) => { return structure.structureType == STRUCTURE_TOWER; } });
   }
+  static getLinks(room: Room): StructureLink[] {
+    return room.find(FIND_STRUCTURES, { filter: (structure: Structure) => { return structure.structureType == STRUCTURE_LINK; } });
+  }
   static getCreepsByRole(room: Room, role: string): Creep[] {
     return room.find(FIND_MY_CREEPS).filter((creep: Creep) => { return creep.memory.role == role && creep.room.name === room.name; });
   }

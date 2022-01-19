@@ -5,6 +5,7 @@ import { manageUpgraders } from 'managers/upgrade-manager';
 import { managerHaulers } from 'managers/hauler-manager';
 import { runBuilder } from 'roles/builder';
 import { runTower } from 'roles/tower';
+import { runLink } from 'roles/link';
 
 import { Tools } from 'utils/tools';
 import { cli } from 'utils/cli';
@@ -137,5 +138,6 @@ export const loop = ErrorMapper.wrapLoop(() => {
   managerHaulers(room);
   manageUpgraders(room);
   curBuilderCount.map(runBuilder);
-  Tools.getTowers(Game.rooms['E33N37']).map(runTower);
+  Tools.getTowers(room).map(runTower);
+  Tools.getLinks(room).map(runLink);
 });
